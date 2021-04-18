@@ -27,7 +27,12 @@ object main{
 
   def verifyMIS(g_in: Graph[Int, Int]): Boolean = {
     //Msg: (source,dist)
-   val add_msg = g_in.aggregateMessages[(Int,Int)](triplet=>{
+    // Only works if it bidirected for every edge
+    val rev = Graph(g_in.vertices,g_in.edges.reverse)
+    //Create a bidirection graph
+    val bi_g_in = Graph(g_in.vertices.union(rev.vertices),g_in.edges.union(rev.edges))
+    g_in.edges.foreach(println)
+    val add_msg = bi_g_in.aggregateMessages[(Int,Int)](triplet=>{
         // Send source info to its neighbors
    if(triplet.srcAttr == 1 && triplet.dstAttr == 1)      triplet.sendToDst((1,1))
    else if(triplet.srcAttr == 1 && triplet.dstAttr == -1) triplet.sendToDst((1,-1))
@@ -38,6 +43,8 @@ object main{
 
     // the msg must be different to make it MIS, so every entry must sum to 0, so no entry should be non-zero
    return add_msg.map(v => v._2._1+v._2._2).filter(s=>math.abs(s)>0).count()==0
+
+
   }
 
   def main(args: Array[String]) {
