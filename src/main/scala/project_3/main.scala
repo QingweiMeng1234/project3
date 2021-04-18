@@ -17,16 +17,28 @@ object main{
   Logger.getLogger("org.spark-project").setLevel(Level.WARN)
 
   def LubyMIS(g_in: Graph[Int, Int]): Graph[Int, Int] = {
-    while (remaining_vertices >= 1) {
-        // To Implement
-    }
+//    while (remaining_vertices >= 1) {
+//        // To Implement
+//    }
+    return g_in
   }
+
 
 
   def verifyMIS(g_in: Graph[Int, Int]): Boolean = {
-    // To Implement
-  }
+    //Msg: (source,dist)
+   val add_msg = g_in.aggregateMessages[(Int,Int)](triplet=>{
+        // Send source info to its neighbors
+   if(triplet.srcAttr == 1 && triplet.dstAttr == 1)      triplet.sendToDst((1,1))
+   else if(triplet.srcAttr == 1 && triplet.dstAttr == -1) triplet.sendToDst((1,-1))
+   else if(triplet.srcAttr == -1 && triplet.dstAttr == 1)  triplet.sendToDst((-1,1))
+   else triplet.sendToDst((-1,-1))},
+     (v1,v2) => (v1._1,math.max(v1._2,v2._2))
+   )
 
+    // the msg must be different to make it MIS, so every entry must sum to 0, so no entry should be non-zero
+   return add_msg.map(v => v._2._1+v._2._2).filter(s=>math.abs(s)>0).count()==0
+  }
 
   def main(args: Array[String]) {
 
