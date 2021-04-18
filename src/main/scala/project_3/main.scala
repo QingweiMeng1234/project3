@@ -39,7 +39,6 @@ object main{
    else triplet.sendToDst((-1,-1))},
      (v1,v2) => (math.max(v1._1,v2._1),math.max(v1._2,v2._2))
    )
-    add_msg.foreach(println)
     // the msg must be different to   make it MIS, so every entry must sum to 0, so no entry should be non-zero
    return add_msg.map(v => v._2._1+v._2._2).filter(s=>math.abs(s)>0).count()==0
 
