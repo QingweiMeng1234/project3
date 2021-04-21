@@ -54,11 +54,13 @@ Apply `LubyMIS` locally on the graph files listed below and report the number of
 3. **(3 points)**  
 a. Run `LubyMIS` on `twitter_original_edges.csv` in GCP with 3x4 cores. Report the number of iterations, running time, and remaining active vertices (i.e. vertices whose status has yet to be determined) at the end of **each iteration**. You may need to include additional print statements in `LubyMIS` in order to acquire this information. Finally, verify your outputs with `verifyMIS`.  
 b. Run `LubyMIS` on `twitter_original_edges.csv` with 4x2 cores and then 2x2 cores. Compare the running times between the 3 jobs with varying core specifications that you submitted in **3a** and **3b**.
-| CPU cores | #iteration | running Time (s) | active vertices| verify
-| ----------------------- | ----------------------- | ----------------------- | ----------------------- | -----------------------
-|3x4|5 | 925 | 6911800, 44457, 559, 2|Yes
-|4x2|5| 1312 | 6829011, 42890, 601, 3|Yes
-|2x2| 5 | 1248 | 6911800, 49131, 532, 2|Yes
+
+
+|        CPU cores       | #iteration | time (s)|remaining vertices| verify
+| ----------------------- | ----------------------- | ----------------------- | ----------------------- | ----------------------- 
+|3x4|5 | 925  | 6911800, 44457, 559, 2|Yes
+|4x2|5 | 1312 | 6829011, 42890, 601, 3|Yes
+|2x2|5 | 1248 | 6911800, 49131, 532, 2|Yes
 
 The 3x4 core is the fastest with 15.4 minutes (+29%), 2x2 is 20.8(+4.8%) minutes and 4x2 is 21.87 minutes. 
 
