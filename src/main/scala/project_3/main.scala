@@ -17,10 +17,43 @@ object main{
   Logger.getLogger("org.spark-project").setLevel(Level.WARN)
 
   def LubyMIS(g_in: Graph[Int, Int]): Graph[Int, Int] = {
-//    while (remaining_vertices >= 1) {
-//        // To Implement
-//    }
-    return g_in
+    var active_vs = 2L
+    var counter = 0
+    val r = scala.util.Random
+    var g = g_in.mapVertices((id, i) => (0, 0F)) //start with all active vertices
+
+    while (active_vs >= 1){ // remaining vertices
+      counter += 1
+      g = g.mapVertices((id, i) => (i._1, r.nextFloat)) //give active vertices random number
+      val v_in = g.aggregateMessages[(Int, Float)]( //return 1 for all selected vertices
+        d => { // Map Function
+            // Send message to destination vertex containing counter and age
+            d.sendToDst(if ((d.srcAttr._2 + d.srcAttr._1) > (d.dstAttr._2 + d.dstAttr._1)) (0, 0) else (1, 0));
+            d.sendToSrc(if ((d.srcAttr._2 + d.srcAttr._1) > (d.dstAttr._2 + d.dstAttr._1)) (1, 0) else (0, 0))
+          },
+          (a,b) => ((math.min(a._1, b._1)), 0F)//take the minimum if two msg at one vertex
+      )
+      var g2 = Graph(v_in, g.edges)
+
+      val v_deactivate = g2.aggregateMessages[(Int, Float)]( //return neighbors of selected
+        d => {
+          d.sendToDst(if (d.dstAttr._1 == 1) (1, 0) else (if (d.srcAttr._1 == 1) (-1, 0) else (0, 0)));
+          d.sendToSrc(if (d.srcAttr._1 == 1) (1, 0) else (if (d.dstAttr._1 == 1) (-1, 0) else (0, 0)))
+            },
+            (a,b) => ((math.min(a._1, b._1)), 0) //can only receive 0 as message
+      )
+
+      g = Graph(v_deactivate, g.edges)
+      g.cache()
+      active_vs = g.vertices.filter({case (id, x) => (x._1 == 0)} ).count()
+      println("***********************************************")
+      println("Iteration# =" + counter + "remaining vertices = " + active_vs)
+      println("***********************************************")
+    }
+    println("***********************************************")
+    println("#Iteration = " + counter)
+    println("***********************************************")
+    return g.mapVertices((id, i) => i._1)
   }
 
 
@@ -46,11 +79,10 @@ object main{
   }
 
   def main(args: Array[String]) {
-
     val conf = new SparkConf().setAppName("project_3")
     val sc = new SparkContext(conf)
     val spark = SparkSession.builder.config(conf).getOrCreate()
-/* You can either use sc or spark */
+  /* You can either use sc or spark */
 
     if(args.length == 0) {
       println("Usage: project_3 option = {compute, verify}")
