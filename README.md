@@ -57,8 +57,8 @@ b. Run `LubyMIS` on `twitter_original_edges.csv` with 4x2 cores and then 2x2 cor
 | CPU cores | #iteration | running Time (s) | active vertices| verify
 | ----------------------- | ----------------------- | ----------------------- | ----------------------- | verify
 |3x4 | 5 | 925 | 6911800, 44457, 559, 2|Yes
-|4x2| 5 | 1312 | 6829011, 42890, 601, 3| Yes
-|2x2| 5 | 1248 | 6911800, 49131, 532, 2| Yes
+|4x2| 5 | 1312 | 6829011, 42890, 601, 3|Yes
+|2x2| 5 | 1248 | 6911800, 49131, 532, 2|Yes
 
 The 3x4 core is the fastest with 15.4 minutes (+29%), 2x2 is 20.8(+4.8%) minutes and 4x2 is 21.87 minutes. 
 
