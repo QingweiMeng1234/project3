@@ -4,9 +4,7 @@
 Head to [Project 1](https://github.com/CSCI3390/project_1) if you're looking for information on Git, template repositories, or setting up your local/remote environments.
 
 ## Spark's GraphX API
-This project will familiarize you with the [GraphX API](https://spark.apache.org/docs/latest/graphx-programming-guide.html) offered by Spark.  
-
-You'll be implementing Luby's maximal independent set (MIS) algorithm and a program to verify MIS. In the program skeleton of `main.scala`, the corresponding functions are `LubyMIS` and `verifyMIS`, respectively.  
+This project implements Luby's maximal independent set (MIS) algorithm and a program to verify MIS. In the program skeleton of `main.scala`, the corresponding functions are `LubyMIS` and `verifyMIS`, respectively.  
 
 ## Relevant data
 
